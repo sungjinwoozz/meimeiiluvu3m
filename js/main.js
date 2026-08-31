@@ -132,7 +132,8 @@ class LoveGalaxyApp {
     if (!playToggle || !audio) return;
 
     if (musicCardWrapper && collapseToggle) {
-      const compactLayout = window.matchMedia('(max-width: 1024px)').matches;
+      const compactLayout = window.matchMedia('(max-width: 1024px), (pointer: coarse) and (max-width: 1366px)').matches
+        || navigator.maxTouchPoints > 0;
       if (compactLayout) musicCardWrapper.classList.add('is-collapsed');
 
       collapseToggle.addEventListener('click', () => {
