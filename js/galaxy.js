@@ -80,8 +80,9 @@ class GalaxySystem {
   }
 
   createSpiralWaveGalaxy() {
-    // 90,000 fine glittering particles for dense stardust between waves
-    const count = 90000;
+    // Dense enough to retain the galaxy shape, while avoiding excessive
+    // transparent-particle overdraw on high-refresh-rate displays.
+    const count = 48000;
     const radius = 50;
     const branches = 4;
     const spin = 1.6;

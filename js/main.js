@@ -11,7 +11,9 @@ class LoveGalaxyApp {
     this.initPostProcessing();
     this.initObjects();
     this.initAudioIntegration();
-    this.animate();
+    // setAnimationLoop follows the browser's active display refresh rate,
+    // instead of imposing a 60 FPS timer.
+    this.renderer.setAnimationLoop(() => this.animate());
   }
 
   initScene() {
@@ -29,10 +31,18 @@ class LoveGalaxyApp {
       antialias: true,
       powerPreference: "high-performance",
       precision: "highp",
+      // Let the browser schedule rendering as close to the display refresh
+      // rate as possible (including 120/144/165/180 Hz displays).
+      desynchronized: true,
       autoClear: false
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    // Rendering at device DPR 1.5–2 multiplies bloom's pixel work while
+    // offering little visible benefit for this particle scene. A modest cap
+    // keeps desktop motion responsive at high refresh rates.
+    this.renderPixelRatio = Math.min(window.devicePixelRatio || 1, 1.25);
+    this.effectPixelRatio = Math.min(this.renderPixelRatio, 1);
+    this.renderer.setPixelRatio(this.renderPixelRatio);
     this.renderer.outputEncoding = THREE.sRGBEncoding;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.0;
@@ -101,6 +111,9 @@ class LoveGalaxyApp {
     );
 
     this.composer = new THREE.EffectComposer(this.renderer);
+    // Bloom is the most expensive pass. Render it at standard resolution;
+    // the crisp overlay is still drawn afterward at renderer resolution.
+    this.composer.setPixelRatio(this.effectPixelRatio);
     this.composer.addPass(this.renderScene);
     this.composer.addPass(this.bloomPass);
   }
@@ -298,13 +311,13 @@ class LoveGalaxyApp {
     const height = window.innerHeight;
 
     this.renderer.setSize(width, height);
+    this.renderer.setPixelRatio(this.renderPixelRatio);
+    this.composer.setPixelRatio(this.effectPixelRatio);
     this.composer.setSize(width, height);
     this.adjustCameraForDevice();
   }
 
   animate() {
-    requestAnimationFrame(() => this.animate());
-
     const delta = this.clock.getDelta();
     const time = this.clock.getElapsedTime();
 

@@ -6,7 +6,9 @@ class HeartVortexSystem {
   constructor(scene) {
     this.scene = scene;
     this.group = new THREE.Group();
-    this.heartCount = 15000;
+    // This remains visually dense after bloom, but is much lighter to blend
+    // every frame on a 120–180 Hz display.
+    this.heartCount = 8000;
     this.heartElevation = 13.5;
 
     this.initTexture();
