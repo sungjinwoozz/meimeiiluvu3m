@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="css/style.css?v=10">
+  <link rel="stylesheet" href="css/style.css?v=11">
 
   <!-- Three.js and Post-Processing CDN scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -147,10 +147,22 @@
     </div>
   </div>
 
-  <!-- Bottom-left love message card -->
-  <div class="message-card" aria-label="ข้อความจากคนรัก">
-    <p class="message-card-text">ขอโทษที่บางทีเค้าอาจจะทำตัวไม่น่ารักไปบ้าง แต่เค้าก็อยากให้เธออยู่กับเค้าไปนานๆนะเพราะเค้าก็ยังอยากมีเธอในอนาคตถึงแม้จะมีวันที่เราไม่เข้ากันใจกันตาม</p>
+  <!-- Love message popup -->
+  <section class="message-card is-closed" id="love-message-popup" role="dialog" aria-modal="false"
+    aria-labelledby="message-card-title" aria-describedby="message-card-copy">
+    <div class="message-card-header">
+      <div>
+        <span class="message-card-eyebrow">มีข้อความถึงเธอ</span>
+        <h2 id="message-card-title"></h2>
+      </div>
+      <button class="message-card-close" id="message-card-close" type="button" aria-label="ปิดข้อความ">×</button>
+    </div>
+    <p class="message-card-text" id="message-card-copy">ขอโทษที่บางทีเค้าอาจจะทำตัวไม่น่ารักไปบ้าง แต่เค้าก็อยากให้เธออยู่กับเค้าไปนานๆนะเพราะเค้าก็ยังอยากมีเธอในอนาคต ถึงแม้จะมีวันที่เราไม่เข้ากันใจกันก็ตาม</p>
     <span class="message-card-username">from: mosmos</span>
+  </section>
+  <button class="message-read-notice" id="message-read-notice" type="button" aria-controls="love-message-popup">
+    <i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>
+    <span>ข้อความถึงเหมยเหมย</span>
   </div>
 
   <!-- Background Audio Player -->
@@ -165,7 +177,7 @@
   <script src="js/galaxy.js?v=11"></script>
   <script src="js/heartVortex.js?v=11"></script>
   <script src="js/orbitingElements.js?v=12"></script>
-  <script src="js/main.js?v=16"></script>
+  <script src="js/main.js?v=17"></script>
 </body>
 
 </html>

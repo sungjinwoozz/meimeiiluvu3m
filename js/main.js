@@ -435,8 +435,30 @@ function initBottomActionButton() {
     <span class="star-4"></span><span class="star-5"></span><span class="star-6"></span>`;
 }
 
+function initLoveMessagePopup() {
+  const popup = document.getElementById('love-message-popup');
+  const closeButton = document.getElementById('message-card-close');
+  const notice = document.getElementById('message-read-notice');
+  if (!popup || !closeButton) return;
+
+  if (notice) {
+    notice.addEventListener('click', () => {
+      popup.classList.remove('is-closed');
+      notice.classList.add('is-hidden');
+      closeButton.focus();
+    });
+  }
+
+  closeButton.addEventListener('click', () => {
+    popup.classList.add('is-closed');
+    if (notice) notice.classList.remove('is-hidden');
+    closeButton.blur();
+  });
+}
+
 // Start application
 window.addEventListener('DOMContentLoaded', () => {
   initBottomActionButton();
+  initLoveMessagePopup();
   window.app = new LoveGalaxyApp();
 });
