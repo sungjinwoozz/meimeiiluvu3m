@@ -328,6 +328,26 @@ body {
   pointer-events: auto;
 }
 
+.music-collapse-toggle {
+  display: none;
+  margin-left: auto;
+  width: 46px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  background: rgba(14, 10, 24, 0.86);
+  color: #ff7eb3;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 18px rgba(255, 42, 141, 0.16);
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.music-collapse-chevron {
+  margin-left: 5px;
+  font-size: 11px;
+  transition: transform 0.25s ease;
+}
+
 .main-music-card {
   max-width: 380px;
   width: 330px;
@@ -639,6 +659,22 @@ body {
   .music-card-wrapper {
     top: max(16px, env(safe-area-inset-top, 16px));
     right: max(18px, env(safe-area-inset-right, 18px));
+  }
+
+  .music-collapse-toggle {
+    display: block;
+  }
+
+  .music-card-wrapper.is-collapsed .main-music-card {
+    display: none;
+  }
+
+  .music-card-wrapper:not(.is-collapsed) .music-collapse-toggle {
+    margin-bottom: 8px;
+  }
+
+  .music-card-wrapper:not(.is-collapsed) .music-collapse-chevron {
+    transform: rotate(180deg);
   }
 
   .main-music-card {

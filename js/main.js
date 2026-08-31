@@ -126,8 +126,21 @@ class LoveGalaxyApp {
     const btnVolUp = document.getElementById('btn-vol-up');
     const btnPrev = document.getElementById('btn-music-prev');
     const btnNext = document.getElementById('btn-music-next');
+    const musicCardWrapper = document.querySelector('.music-card-wrapper');
+    const collapseToggle = document.getElementById('music-collapse-toggle');
 
     if (!playToggle || !audio) return;
+
+    if (musicCardWrapper && collapseToggle) {
+      const compactLayout = window.matchMedia('(max-width: 1024px)').matches;
+      if (compactLayout) musicCardWrapper.classList.add('is-collapsed');
+
+      collapseToggle.addEventListener('click', () => {
+        const collapsed = musicCardWrapper.classList.toggle('is-collapsed');
+        collapseToggle.setAttribute('aria-expanded', String(!collapsed));
+        collapseToggle.setAttribute('aria-label', collapsed ? 'เปิดเครื่องเล่นเพลง' : 'พับเครื่องเล่นเพลง');
+      });
+    }
 
     const formatTime = (seconds) => {
       if (isNaN(seconds) || seconds < 0) return '0:00';
