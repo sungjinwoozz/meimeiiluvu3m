@@ -642,13 +642,34 @@ body {
   }
 
   .main-music-card {
-    width: 290px;
-    padding: 12px 14px;
+    width: 260px;
+    padding: 10px 12px;
+    border-radius: 22px;
+    gap: 9px;
   }
 
   .album-art {
-    width: 46px;
-    height: 46px;
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+  }
+
+  .track-title {
+    font-size: 1em;
+  }
+
+  .artist-name {
+    font-size: 0.78em;
+  }
+
+  .control-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .control-button svg {
+    width: 20px;
+    height: 20px;
   }
 }
 
