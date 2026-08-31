@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>3MMMMM</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Stylesheet with Cache-Buster -->
+  <link rel="stylesheet" href="css/style.css?v=8">
+
+  <!-- Three.js and Post-Processing CDN scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+</head>
+
+<body>
+  <!-- 3D WebGL Canvas Container -->
+  <div id="webgl-container"></div>
+
+  <!-- Ambient Vignette -->
+  <div class="vignette-overlay"></div>
+
+  <!-- Top-Left Brand Badge -->
+  <div class="brand-badge-container">
+    <div class="brand-group">
+      <div class="heart-pulse-icon">
+        <i class="fa-solid fa-heart"></i>
+      </div>
+      <div class="brand-text">
+        <h1 id="couple-names-display">MEIMEII</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top-Right Music Player Card -->
+  <div class="music-card-wrapper">
+    <div class="main-music-card">
+      <input type="checkbox" id="play-toggle" hidden>
+
+      <div class="track-info">
+        <div class="album-art"></div>
+        <div class="track-details">
+          <div class="track-title">Love Songs</div>
+          <div class="artist-name">Kaash Paige</div>
+        </div>
+        <div class="volume-bars">
+          <div class="bar" style="--delay: 0s;"></div>
+          <div class="bar" style="--delay: 0.1s;"></div>
+          <div class="bar" style="--delay: 0.2s;"></div>
+          <div class="bar" style="--delay: 0.3s;"></div>
+          <div class="bar" style="--delay: 0.4s;"></div>
+          <div class="bar" style="--delay: 0.5s;"></div>
+          <div class="bar" style="--delay: 0.6s;"></div>
+          <div class="bar" style="--delay: 0.7s;"></div>
+        </div>
+      </div>
+
+      <div class="playback-controls">
+        <!-- Interactive Progress Slider Bar -->
+        <div class="progress-bar-wrap" id="song-progress-wrap">
+          <div class="progress-bar" id="song-progress-bar">
+            <div class="progress-fill" id="song-progress-fill">
+              <div class="progress-handle"></div>
+            </div>
+          </div>
+        </div>
+        <div class="time-info">
+          <span class="current-time" id="current-time-text">0:00</span>
+          <span class="remaining-time" id="remaining-time-text">0:00</span>
+        </div>
+
+        <div class="button-row">
+          <div class="main-control-btns">
+            <button class="control-button back" id="btn-music-prev" aria-label="Previous">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                  d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5" />
+              </svg>
+            </button>
+            <div class="play-pause-btns">
+              <label for="play-toggle" class="control-button play-pause-button" id="btn-play-pause-label"
+                aria-label="Play/Pause">
+                <svg class="icon-play" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M11.596 8.697l-6.363 3.692c-.54.314-1.233-.065-1.233-.696V4.308c0-.63.693-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+                </svg>
+                <svg class="icon-pause" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5" />
+                </svg>
+              </label>
+            </div>
+            <button class="control-button next" id="btn-music-next" aria-label="Next">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                  d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.753l-6.267 3.636c-.54.313-1.233-.066-1.233-.697v-2.94l-6.267 3.636C.693 12.703 0 12.324 0 11.693V4.308c0-.63.693-1.01 1.233-.696L7.5 7.248v-2.94c0-.63.693-1.01 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Volume Controls Slider Row -->
+        <div class="volume-slider-row">
+          <button class="volume-btn" id="btn-vol-down" title="ลดเสียง">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path
+                d="M9 4a.5.5 0 0 0-.812-.39L5.825 5.5H3.5A1.5 1.5 0 0 0 2 7v2a1.5 1.5 0 0 0 1.5 1.5h2.325l2.363 1.89A.5.5 0 0 0 9 12zm3.025 4a4.5 4.5 0 0 1-1.318 3.182L10 10.475A3.5 3.5 0 0 0 11.025 8a3.5 3.5 0 0 0-1.025-2.475l.707-.707A4.5 4.5 0 0 1 12.025 8" />
+            </svg>
+          </button>
+          <div class="slider-track-wrap">
+            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+          </div>
+          <button class="volume-btn" id="btn-vol-up" title="เพิ่มเสียง">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path
+                d="M11.536 14.01A8.47 8.47 0 0 0 14.026 8a8.47 8.47 0 0 0-2.49-6.01l-.708.707A7.48 7.48 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303z" />
+              <path
+                d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z" />
+              <path
+                d="M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025 8 3.5 3.5 0 0 1 8 10.475zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A1.5 1.5 0 0 1 0 9V7a1.5 1.5 0 0 1 1.5-1.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Audio Player -->
+  <audio id="bg-audio" src="assets/love_songs.mp3" loop preload="auto" autoplay></audio>
+
+  <!-- Bottom-right action button -->
+  <div class="bottom-action-button">
+    <button type="button" aria-label="Hover me" onclick="window.location.href='https://meimeiiluvuuuuu.netlify.app/'"></button>
+  </div>
+
+  <!-- Optimized Application Logic Modules with Cache-Buster -->
+  <script src="js/galaxy.js?v=10"></script>
+  <script src="js/heartVortex.js?v=10"></script>
+  <script src="js/orbitingElements.js?v=12"></script>
+  <script src="js/main.js?v=13"></script>
+</body>
+
+</html>
